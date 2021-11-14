@@ -4,7 +4,7 @@ package com.example.tegnelabben.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "theme")
+@Table(name = "Theme")
 /**
  * Class for Theme
  * @version 1.0
