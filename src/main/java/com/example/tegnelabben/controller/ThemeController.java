@@ -33,9 +33,9 @@ public class ThemeController {
    * @return grades and themes. HttpStatus.OK or HttpStatus.BAD_REQUEST with error message
    */
   @GetMapping
-  public ResponseEntity<?> findAllGradesWithThemes() {
+  public ResponseEntity<?> findAllThemes() {
     try {
-      List<Theme> themes = themeService.findAllGradesWithThemes();
+      List<Theme> themes = themeService.findAllThemes();
       return new ResponseEntity<>(themes, HttpStatus.OK);
     } catch (NoSuchElementException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -64,13 +64,19 @@ public class ThemeController {
    * @param theme RequestBody
    * @return reservation and HttpStatus.CREATED or HttpStatus.BAD_REQUEST and error message
    */
+  //todo: skal man ta imot id? skal ikke denne genereres automatisk?
   @PostMapping
-  ResponseEntity<?> createReservation(@RequestBody Theme theme) {
+  ResponseEntity<?> createTheme(@RequestBody Theme theme) {
     try {
-      Theme theme1 = themeService.createTheme(theme);
+      Theme theme1 = themeService.createTheme(theme.getTitle(), theme.getDescription(), theme.getGrade(), theme.getThumbnail(), theme.getVideolink());
       return new ResponseEntity<>(theme1, HttpStatus.CREATED);
     } catch (IllegalArgumentException | NoSuchElementException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
   }
+
+
+  //todo: put mapping (update altså)
+
+  //todo: delete mapping (for å slette temaer)
 }
