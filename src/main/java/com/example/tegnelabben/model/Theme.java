@@ -31,6 +31,20 @@ public class Theme {
   private String videolink;
 
   /**
+   * Empty constructor
+   */
+  public Theme() {
+  }
+
+  public Theme(String title, String description, int grade, String thumbnail, String videolink) {
+    this.title = title;
+    this.description = description;
+    this.grade = grade;
+    this.thumbnail = thumbnail;
+    this.videolink = videolink;
+  }
+
+  /**
    * Getters and setters for all attributes for now.
    * Todo: make an assessment on which we actually need and not.
    */

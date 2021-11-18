@@ -5,7 +5,10 @@ import com.example.tegnelabben.model.Theme;
 import com.example.tegnelabben.service.ThemeService;
 import java.util.List;
 import java.util.NoSuchElementException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.AccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +25,7 @@ public class ThemeController {
   @Autowired
   ThemeService themeService;
 
+  Logger logger = LoggerFactory.getLogger(ThemeController.class);
 
   /**
    * GetMapping for finding all themes sorted by grade?
@@ -29,9 +33,9 @@ public class ThemeController {
    * @return grades and themes. HttpStatus.OK or HttpStatus.BAD_REQUEST with error message
    */
   @GetMapping
-  public ResponseEntity<?> findAllGradesWithThemes() {
+  public ResponseEntity<?> findAllThemes() {
     try {
-      List<Theme> themes = themeService.findAllGradesWithThemes();
+      List<Theme> themes = themeService.findAllThemes();
       return new ResponseEntity<>(themes, HttpStatus.OK);
     } catch (NoSuchElementException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -54,4 +58,25 @@ public class ThemeController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
   }
+
+  /**
+   * PostMapping for creating a theme
+   * @param theme RequestBody
+   * @return reservation and HttpStatus.CREATED or HttpStatus.BAD_REQUEST and error message
+   */
+  //todo: skal man ta imot id? skal ikke denne genereres automatisk?
+  @PostMapping
+  ResponseEntity<?> createTheme(@RequestBody Theme theme) {
+    try {
+      Theme theme1 = themeService.createTheme(theme.getTitle(), theme.getDescription(), theme.getGrade(), theme.getThumbnail(), theme.getVideolink());
+      return new ResponseEntity<>(theme1, HttpStatus.CREATED);
+    } catch (IllegalArgumentException | NoSuchElementException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+  }
+
+
+  //todo: put mapping (update altså)
+
+  //todo: delete mapping (for å slette temaer)
 }
