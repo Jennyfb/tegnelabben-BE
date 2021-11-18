@@ -39,4 +39,14 @@ public class ThemeService {
     }
     return themeRepo.findById(id);
   }
+
+  /**
+   * Method for creating a reservation
+   * @param theme to be created
+   * @return a reservation or throw exception if any input is wrong
+   */
+  public Theme createTheme(Theme theme) {
+    //todo: burde ha sjekker for å sikre at objektet er bra
+    return themeRepo.save(theme);
+  }
 }
