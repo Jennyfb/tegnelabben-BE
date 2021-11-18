@@ -74,9 +74,35 @@ public class ThemeController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
   }
+  
 
+  /**
+   * PutMapping for updating theme info
+   * @param theme Requesting Body with new theme info
+   * @param id of theme, PathVariable from client
+   * @return Theme and HttpStatus.OK if all ok or BAD_REQUEST
+   */
+  @PutMapping("/{id}")
+  //@PreAuthorize("isAuthenticated()")
+  //todo: add authentication
+  public ResponseEntity<?> updateActivity(@RequestBody Theme theme, @PathVariable long id) {
+    Theme updatedTheme = null;
+    try{
+      updatedTheme = themeService.updateTheme(theme, id);
+      logger.info("Updating theme with id:" + id);
+      return new ResponseEntity<>(updatedTheme, HttpStatus.CREATED);
+    } catch(IllegalArgumentException e){
+      logger.info("Wrong format was given when updating theme");
+      return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+    //todo: catch accesException
+  /*
+  } catch (AccessException e) {
+    throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
+  }
+   */
 
-  //todo: put mapping (update altså)
+  }
 
   //todo: delete mapping (for å slette temaer)
 }

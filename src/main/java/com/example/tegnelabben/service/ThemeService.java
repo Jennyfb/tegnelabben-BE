@@ -94,5 +94,46 @@ public class ThemeService {
     return false;
   }
 
+  /**
+   * Method for updating exsisting theme
+   * @param updatedTheme with updated info
+   * @param id of theme to be updated
+   * @return The updated theme or null if not valid
+   */
+  //todo: use try catch instead? throw illegal argument like in create?
+  public Theme updateTheme(Theme updatedTheme, long id){
+    Theme current = themeRepo.findById(id);
+
+    //todo: sikkerhetsjekker
+    if(current == null) {
+      throw new NoSuchElementException("There are no themes with this id");
+    }
+
+    if(!updatedTheme.getTitle().equals("") && updatedTheme.getTitle()!=null){
+      current.setTitle(updatedTheme.getTitle());
+    }
+
+    if(!updatedTheme.getDescription().equals("") && updatedTheme.getDescription()!=null){
+      current.setDescription(updatedTheme.getDescription());
+    }
+
+    if(updatedTheme.getGrade()!=0){
+      if(updatedTheme.getGrade()<0 || updatedTheme.getGrade()>20){
+        throw new IllegalArgumentException("Grade must be between 1-19.");
+      } else {
+        current.setGrade(updatedTheme.getGrade());
+      }
+    }
+
+    if(!updatedTheme.getThumbnail().equals("") && updatedTheme.getThumbnail()!=null){
+      current.setThumbnail(updatedTheme.getThumbnail());
+    }
+
+    if(!updatedTheme.getVideolink().equals("") && updatedTheme.getVideolink()!=null){
+      current.setVideolink(updatedTheme.getVideolink());
+    }
+
+    return themeRepo.save(current);
+  }
 
 }
