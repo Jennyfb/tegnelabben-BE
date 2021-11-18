@@ -54,15 +54,15 @@ public class ThemeService {
    */
   public Theme createTheme(String title, String description, int grade, String thumbnail, String videoLink) {
 
-    if(title==null){
+    if(title.equals("")){
       throw new IllegalArgumentException("Theme must have title.");
-    } else if(description==null){
+    } else if(description.equals("")){
       throw new IllegalArgumentException("Theme must have a description.");
     } else if(grade<0 || grade>20){
       throw new IllegalArgumentException("Grade must be between 1-19.");
-    } else if(thumbnail==null){
+    } else if(thumbnail.equals("")){
       throw new IllegalArgumentException("Theme must have thumbnail.");
-    } else if(videoLink==null){
+    } else if(videoLink.equals("")){
       throw new IllegalArgumentException("Theme must have link to video.");
     }
 
