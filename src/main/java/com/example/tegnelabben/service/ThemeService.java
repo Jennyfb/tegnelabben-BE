@@ -108,6 +108,7 @@ public class ThemeService {
     if(current == null) {
       throw new NoSuchElementException("There are no themes with this id");
     }
+    //todo: hvis det ikke er et tema?
 
     if(!updatedTheme.getTitle().equals("") && updatedTheme.getTitle()!=null){
       current.setTitle(updatedTheme.getTitle());
@@ -119,6 +120,7 @@ public class ThemeService {
 
     if(updatedTheme.getGrade()!=0){
       if(updatedTheme.getGrade()<0 || updatedTheme.getGrade()>20){
+        //todo: ser ikke ut som denne blir kastet? 
         throw new IllegalArgumentException("Grade must be between 1-19.");
       } else {
         current.setGrade(updatedTheme.getGrade());

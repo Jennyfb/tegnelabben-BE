@@ -74,7 +74,7 @@ public class ThemeController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
   }
-  
+
 
   /**
    * PutMapping for updating theme info
