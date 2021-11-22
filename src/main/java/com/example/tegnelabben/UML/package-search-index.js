@@ -1,1 +1,0 @@
-packageSearchIndex = [{"l":"All Packages","url":"allpackages-index.html"},{"l":"com.example.tegnelabben"},{"l":"com.example.tegnelabben.controller"},{"l":"com.example.tegnelabben.model"},{"l":"com.example.tegnelabben.repo"},{"l":"com.example.tegnelabben.service"}]
