@@ -104,5 +104,21 @@ public class ThemeController {
 
   }
 
-  //todo: delete mapping (for å slette temaer)
+
+  /**
+   * DeleteMapping for deleting a theme by id
+   * @param id PathVariable
+   * @return HttpStatus.OK or HttpStatus.BAD_REQUEST and error message
+   */
+  //@PreAuthorize("hasRole('ROLE_ADMIN')")
+  //todo: add authoriassjon
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> deleteRoom (@PathVariable long id) {
+    try {
+      themeService.deleteTheme(id);
+      return new ResponseEntity<>(HttpStatus.OK);
+    } catch (NoSuchElementException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+  }
 }

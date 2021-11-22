@@ -138,4 +138,17 @@ public class ThemeService {
     return themeRepo.save(current);
   }
 
+
+  /**
+   * Method for deleting theme by id
+   * @param id of theme to be deleted
+   * throw exception if id does not exist
+   */
+  public void deleteTheme(long id) {
+    Theme theme = themeRepo.findById(id);
+    if(theme == null) {
+      throw new NoSuchElementException("No such theme exists");
+    }
+    themeRepo.deleteById(id);
+  }
 }
