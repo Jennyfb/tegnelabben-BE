@@ -2,6 +2,7 @@ package com.example.tegnelabben.service;
 
 import com.example.tegnelabben.model.Theme;
 import com.example.tegnelabben.repo.ThemeRepo;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.slf4j.Logger;
@@ -30,6 +31,25 @@ public class ThemeService {
     }
 
     return themes;
+  }
+
+  /**
+   * Method for finding all themes that belong to a specific grade
+   * @param grade the specific grade
+   * @return list with 
+   */
+  public List<Theme> findThemesByGrade(int grade){
+    List<Theme> allThemes = themeRepo.findAll();
+    List<Theme> foundThemes = new ArrayList<>();
+
+    for(int i = 0; i < allThemes.size(); i ++){
+      int g = allThemes.get(i).getGrade();
+      if(g==grade) {
+        foundThemes.add(allThemes.get(i));
+      }
+    }
+    return foundThemes;
+
   }
 
   /**
