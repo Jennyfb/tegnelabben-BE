@@ -24,6 +24,7 @@ public class ThemeService {
   public List<Theme> findAllThemes() {
     List<Theme> themes = themeRepo.findAll();
     //todo: burde sortere de etter grade/klasse
+    //todo: trenger vi å returnere bad request? eller kan det bare returneres en tom liste?
     if(themes.size() == 0) {
       throw new NoSuchElementException("There are no themes created yet");
     }
