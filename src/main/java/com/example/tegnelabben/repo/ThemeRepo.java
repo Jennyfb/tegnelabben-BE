@@ -11,7 +11,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ThemeRepo extends JpaRepository<Theme, Long> {
 
-  //todo: This is how I have done it earlier. Make an assessment if it should be different.
   Theme findById(long id);
 }
 

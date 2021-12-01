@@ -31,6 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/resources/application.properties
+src/main/resources/application-prod.properties
 src/test/resources/application.properties
 src/main/java/com/example/tegnelabben/UML
