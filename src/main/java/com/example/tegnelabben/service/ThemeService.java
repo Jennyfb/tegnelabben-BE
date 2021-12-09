@@ -19,12 +19,10 @@ public class ThemeService {
 
   Logger logger = LoggerFactory.getLogger(ThemeService.class);
   /**
-   * todo: Method for returning all themes sorted by grade?
    * @return list of all themes sorted by grade or throw exception if there are no themes
    */
   public List<Theme> findAllThemes() {
     List<Theme> themes = themeRepo.findAll();
-    //todo: burde sortere de etter grade/klasse
     //todo: trenger vi å returnere bad request? eller kan det bare returneres en tom liste?
     if(themes.size() == 0) {
       throw new NoSuchElementException("There are no themes created yet");
@@ -36,7 +34,7 @@ public class ThemeService {
   /**
    * Method for finding all themes that belong to a specific grade
    * @param grade the specific grade
-   * @return list with 
+   * @return list with
    */
   public List<Theme> findThemesByGrade(int grade){
     List<Theme> allThemes = themeRepo.findAll();
