@@ -42,7 +42,6 @@ public class ThemeController {
     }
   }
 
-
   /**
    * Getmapping for finding theme by id
    * todo: skal vi finne theme basert på noe annet enn id?
@@ -54,6 +53,24 @@ public class ThemeController {
     try {
       Theme theme = themeService.findThemeById(id);
       return new ResponseEntity<>(theme, HttpStatus.OK);
+    } catch (NoSuchElementException e) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+    }
+  }
+
+  //todO:diskuter med kamilla. endepunktene burde være mer oversiktlige.
+ // http://localhost:8080/tegnelabben/5
+
+  /**
+   * Getmapping for finding all themes in specific grade
+   * @param grade PathVariable
+   * @return theme and HttpStatus.OK or HttpStatus.BAD_REQUEST and error message
+   */
+  @GetMapping("/klasse/{grade}")
+  public ResponseEntity<?> findThemesByGrade(@PathVariable int grade) {
+    try {
+      List<Theme> themes = themeService.findThemesByGrade(grade);
+      return new ResponseEntity<>(themes, HttpStatus.OK);
     } catch (NoSuchElementException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
