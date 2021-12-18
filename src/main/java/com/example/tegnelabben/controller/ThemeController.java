@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 /**
  * Controller class for Theme
  */
+//todo: endre til /tegnelabben/tema evt bare /tema
 @RestController
 @RequestMapping("/tegnelabben")
 @CrossOrigin
@@ -29,7 +30,6 @@ public class ThemeController {
 
   /**
    * GetMapping for finding all themes sorted by grade?
-   * todo: how do we structure this best? all themes sorted by grade?
    * @return grades and themes. HttpStatus.OK or HttpStatus.BAD_REQUEST with error message
    */
   @GetMapping
@@ -58,9 +58,6 @@ public class ThemeController {
     }
   }
 
-  //todO:diskuter med kamilla. endepunktene burde være mer oversiktlige.
- // http://localhost:8080/tegnelabben/5
-
   /**
    * Getmapping for finding all themes in specific grade
    * @param grade PathVariable
@@ -81,8 +78,8 @@ public class ThemeController {
    * @param theme RequestBody
    * @return reservation and HttpStatus.CREATED or HttpStatus.BAD_REQUEST and error message
    */
-  //todo: skal man ta imot id? skal ikke denne genereres automatisk?
   @PostMapping
+  //todo:@PreAuthorize("isAuthenticated()")
   ResponseEntity<?> createTheme(@RequestBody Theme theme) {
     try {
       Theme theme1 = themeService.createTheme(theme.getTitle(), theme.getDescription(), theme.getGrade(), theme.getThumbnail(), theme.getVideolink());
@@ -100,8 +97,7 @@ public class ThemeController {
    * @return Theme and HttpStatus.OK if all ok or BAD_REQUEST
    */
   @PutMapping("/{id}")
-  //@PreAuthorize("isAuthenticated()")
-  //todo: add authentication
+  //todo:@PreAuthorize("isAuthenticated()")
   public ResponseEntity<?> updateActivity(@RequestBody Theme theme, @PathVariable long id) {
     Theme updatedTheme = null;
     try{
@@ -127,8 +123,7 @@ public class ThemeController {
    * @param id PathVariable
    * @return HttpStatus.OK or HttpStatus.BAD_REQUEST and error message
    */
-  //@PreAuthorize("hasRole('ROLE_ADMIN')")
-  //todo: add authoriassjon
+  //todo:@PreAuthorize("isAuthenticated()")
   @DeleteMapping("/{id}")
   public ResponseEntity<?> deleteRoom (@PathVariable long id) {
     try {
