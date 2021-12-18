@@ -40,9 +40,10 @@ public class AdminController {
 
   private Logger logger = LoggerFactory.getLogger(AdminController.class);
 
+  //todo: remove this
   /**
    * PostMapping for creating admin user
-   * @param admin RequestBody from client
+   * @param admin Requesting, admin
    * @return admin user and HttpStatus.CREATED or HttpStatus.BAD_REQUEST
    */
   @PostMapping
@@ -52,15 +53,15 @@ public class AdminController {
       logger.info("Admin user was created");
       return new ResponseEntity<>(admin1, HttpStatus.CREATED);
     } catch (IllegalArgumentException e) {
-      logger.info(e.getMessage());
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
   }
 
+  /* Should not be able to find all admins
   /**
    * GetMapping for finding all themes sorted by grade?
    * @return grades and themes. HttpStatus.OK or HttpStatus.BAD_REQUEST with error message
-   */
+   *
   @GetMapping
   public ResponseEntity<?> findAllAdmins() {
     try {
@@ -70,59 +71,55 @@ public class AdminController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
   }
+   */
 
-    /**
-     * PutMapping for updating admin info
-     * @param admin, Requesting Body with new admin info
-     * @param id, admins id, PathVariable from client
-     * @return admin and HttpStatus.OK if all ok or BAD_REQUEST if wrong input from admin
-     */
+  /**
+   * PutMapping for updating admin info
+   * @param admin Requesting Body, new admin info
+   * @param id  PathVariable, admin id
+   * @return updated admin and HttpStatus.OK or BAD_REQUEST
+   */
   @PutMapping("/{id}")
-  //@PreAuthorize("isAuthenticated()")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<?> updateAdmin(@RequestBody Admin admin, @PathVariable long id) {
     try {
       Admin updatedAdmin = adminService.updateAdmin(admin, id);
       logger.info("Updated admin with id: " + id);
       return new ResponseEntity<>(updatedAdmin, HttpStatus.OK);
     } catch (IllegalArgumentException e) {
-      logger.info(e.getMessage());
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     } catch (AccessException e) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
     }
   }
 
-
   /**
    * DeleteMapping for deleting a admin
-   * @param id, PathVariable which is the admins id
-   * @return ok og bad request
+   * @param id PathVariable, admin id
+   * @return HttpStatus.OK or BAD_REQUEST
    */
   @DeleteMapping("/{id}")
-  //@PreAuthorize("isAuthenticated()")
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<?> deleteAdmin(@PathVariable long id) {
     try {
       adminService.deleteAdmin(id);
       logger.info("Deleted admin user with id: " + id);
       return new ResponseEntity<>(HttpStatus.OK);
     } catch (NoSuchElementException e) {
-      logger.info(e.getMessage());
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     } catch (AccessException e) {
       throw new ResponseStatusException(HttpStatus.FORBIDDEN, e.getMessage());
     }
   }
 
-  //todo: trenger vi muligheten til å oppdatere passord, dropper det, is a lot
 
   /**
-   * Post mapping to authorise a admin and get an authorisation-token in return
-   * @param authenticationRequest request body containing email and password
-   * @return the token used to authorise access in later requests
-   * @throws Exception
+   * Post mapping to authorize an admin
+   * @param authenticationRequest Requesting body, containing email and password
+   * @return The token used to authorise access in later requests and OK or BAD_REQUEST
    */
   @PostMapping("/authenticate")
-  public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+  public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest){
     try {
       authenticationmanager.authenticate(
           new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
@@ -138,9 +135,9 @@ public class AdminController {
 
   /**
    * Method for confirming if password sent by admin is equal to password in database
-   * @param id id of admin sending password
-   * @param admin The admin sending the password
-   * @return 200 if ok, 400 if not
+   * @param id Pathvariable, id of admin sending password
+   * @param admin Requesting body, The admin sending the password
+   * @return HttpStatus.OK or BAD_REQUEST
    */
   @PostMapping("/{id}/confirm-password")
   public ResponseEntity<?> confirmPassword(@PathVariable long id, @RequestBody Admin admin) {

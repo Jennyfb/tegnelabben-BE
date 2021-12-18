@@ -6,8 +6,6 @@ import com.example.tegnelabben.security.BasicAdminDetails;
 import com.example.tegnelabben.security.Sha256PasswordEncoder;
 import java.util.List;
 import java.util.NoSuchElementException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.expression.AccessException;
@@ -25,11 +23,7 @@ public class AdminService {
   @Value("${security.salt}")
   String salt;
 
-  private Logger logger = LoggerFactory.getLogger(AdminService.class);
-
-  //todo: kommer til å trenge create admin, og delete admin, evt update også. Man kan jo fort glemme passord typ :(
-
-
+  //todo: remove this so one can not just create a new admin.
   /**
    * Method for creating admin
    * @param admin data received from client to create user
@@ -47,9 +41,10 @@ public class AdminService {
     return adminRepo.save(admin);
   }
 
+  /* Should not be able to find all admins
   /**
    * @return list of all themes sorted by grade or throw exception if there are no themes
-   */
+   *
   public List<Admin> findAllAdmins() {
     List<Admin> admins = adminRepo.findAll();
     if(admins.size() == 0) {
@@ -58,7 +53,7 @@ public class AdminService {
 
     return admins;
   }
-
+   */
 
   /**
    * Method for updating admin.
@@ -70,12 +65,10 @@ public class AdminService {
   public Admin updateAdmin(Admin newAdmin, long id) throws AccessException {
     Admin current = adminRepo.findById(id);
 
-    /*
+    //admin only able to change their own info
     BasicAdminDetails authenticatedUser = (BasicAdminDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     if(authenticatedUser.getId() != id)
       throw new AccessException("Cannot update admin different than the authenticated admin");
-
-     */
 
     //will just have update username for now
     if ((newAdmin.getUsername() != null) && (!(newAdmin.getUsername().equals(current.getUsername())))) {
@@ -104,13 +97,10 @@ public class AdminService {
    * @param id, of the user that is to be deleted
    */
   public void deleteAdmin(long id) throws AccessException {
-    /*
+    //admin should only be able to delete their own user
     BasicAdminDetails authenticatedAdmin = (BasicAdminDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     if(authenticatedAdmin.getId() != id)
       throw new AccessException("Cannot delete admin user different than the authenticated admin user");
-
-     */
-
 
     if(adminRepo.findById(id) == null) {
       throw new NoSuchElementException("No such admin user with " + id + " exist");
