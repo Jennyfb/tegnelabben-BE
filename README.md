@@ -21,4 +21,9 @@ spring.datasource.username=<username>
 spring.datasource.password=<password>
 ```
 
-Recomend using IDE to tun API.
+Run api.
+```
+mvn exec:java -Dexec.mainClass="project.name"
+```
+Or use ide to run api.
+
