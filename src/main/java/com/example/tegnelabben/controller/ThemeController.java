@@ -106,7 +106,7 @@ public class ThemeController {
     try{
       updatedTheme = themeService.updateTheme(theme, id);
       logger.info("Updating theme with id: " + id);
-      return new ResponseEntity<>(updatedTheme, HttpStatus.CREATED);
+      return new ResponseEntity<>(updatedTheme, HttpStatus.OK);
     } catch(IllegalArgumentException e){
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
