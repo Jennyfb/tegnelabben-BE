@@ -52,7 +52,7 @@ public class ThemeController {
   public ResponseEntity<?> findThemeById(@PathVariable long id) {
     try {
       Theme theme = themeService.findThemeById(id);
-      logger.info("Found theme with id" + id);
+      logger.info("Found theme with id " + id);
       return new ResponseEntity<>(theme, HttpStatus.OK);
     } catch (NoSuchElementException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -68,7 +68,7 @@ public class ThemeController {
   public ResponseEntity<?> findThemesByGrade(@PathVariable int grade) {
     try {
       List<Theme> themes = themeService.findThemesByGrade(grade);
-      logger.info("Found all themes in grade" + grade);
+      logger.info("Found all themes in grade " + grade);
       return new ResponseEntity<>(themes, HttpStatus.OK);
     } catch (NoSuchElementException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -105,7 +105,7 @@ public class ThemeController {
     Theme updatedTheme = null;
     try{
       updatedTheme = themeService.updateTheme(theme, id);
-      logger.info("Updating theme with id:" + id);
+      logger.info("Updating theme with id: " + id);
       return new ResponseEntity<>(updatedTheme, HttpStatus.CREATED);
     } catch(IllegalArgumentException e){
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
@@ -122,7 +122,7 @@ public class ThemeController {
   public ResponseEntity<?> deleteTheme(@PathVariable long id) {
     try {
       themeService.deleteTheme(id);
-      logger.info("Deleted theme with id:" + id);
+      logger.info("Deleted theme with id: " + id);
       return new ResponseEntity<>(HttpStatus.OK);
     } catch (NoSuchElementException e) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
