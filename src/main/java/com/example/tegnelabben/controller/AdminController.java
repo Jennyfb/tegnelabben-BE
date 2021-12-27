@@ -26,7 +26,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/tegnelabben/admin")
+@RequestMapping("/admin")
 @CrossOrigin
 public class AdminController {
   @Autowired
@@ -40,13 +40,13 @@ public class AdminController {
 
   private Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-  //todo: remove this
   /**
    * PostMapping for creating admin user
    * @param admin Requesting, admin
    * @return admin user and HttpStatus.CREATED or HttpStatus.BAD_REQUEST
    */
   @PostMapping
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<?> createAdmin(@RequestBody Admin admin) {
     try {
       Admin admin1 = adminService.createAdmin(admin);
@@ -57,12 +57,13 @@ public class AdminController {
     }
   }
 
-  /* Should not be able to find all admins
+  //Admin should be able to find all admins
   /**
    * GetMapping for finding all themes sorted by grade?
    * @return grades and themes. HttpStatus.OK or HttpStatus.BAD_REQUEST with error message
-   *
+   */
   @GetMapping
+  @PreAuthorize("isAuthenticated()")
   public ResponseEntity<?> findAllAdmins() {
     try {
       List<Admin> admins = adminService.findAllAdmins();
@@ -71,7 +72,6 @@ public class AdminController {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
   }
-   */
 
   /**
    * PutMapping for updating admin info

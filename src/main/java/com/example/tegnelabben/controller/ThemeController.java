@@ -19,7 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
  */
 //todo: endre til /tegnelabben/tema evt bare /tema
 @RestController
-@RequestMapping("/tegnelabben")
+@RequestMapping("/tema")
 @CrossOrigin
 public class ThemeController {
 

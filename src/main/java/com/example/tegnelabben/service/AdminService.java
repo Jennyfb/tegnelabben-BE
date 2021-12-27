@@ -41,10 +41,9 @@ public class AdminService {
     return adminRepo.save(admin);
   }
 
-  /* Should not be able to find all admins
   /**
    * @return list of all themes sorted by grade or throw exception if there are no themes
-   *
+   */
   public List<Admin> findAllAdmins() {
     List<Admin> admins = adminRepo.findAll();
     if(admins.size() == 0) {
@@ -53,7 +52,7 @@ public class AdminService {
 
     return admins;
   }
-   */
+
 
   /**
    * Method for updating admin.
