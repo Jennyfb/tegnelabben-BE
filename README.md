@@ -6,7 +6,7 @@ This project requires java jdk 11 and maven.
 
 Clone the repository.
 ```
-git clone hhttps://github.com/Jennyfb/tegnelabben-BE.git
+git clone https://github.com/Jennyfb/tegnelabben-BE.git
 ```
 Add a the file application.properties under src/main/resources. The file should contail the following:
 ```
