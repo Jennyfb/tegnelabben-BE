@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/admin")
 @CrossOrigin
+/**
+ * Controller class for Admin
+ */
 public class AdminController {
   @Autowired
   private AuthenticationManager authenticationmanager;

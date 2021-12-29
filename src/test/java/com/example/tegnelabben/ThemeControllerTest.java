@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import com.example.tegnelabben.controller.ThemeController;
 import com.example.tegnelabben.model.Admin;
 import com.example.tegnelabben.model.AuthenticationRequest;
 import com.example.tegnelabben.model.Theme;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +27,6 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-//TODO: legg til autorisasjon for create, update og delete
 @SpringBootTest
 @AutoConfigureMockMvc
 @TestPropertySource(
@@ -82,7 +83,7 @@ class ThemeControllerTest {
 
   @Test
   void testFindAllThemes () throws Exception {
-    mockMvc.perform(get("/tegnelabben").contentType(MediaType.APPLICATION_JSON))
+    mockMvc.perform(get("/tema").contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
         .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
         .andExpect(jsonPath("$", hasSize(2)))
@@ -94,7 +95,7 @@ class ThemeControllerTest {
   void testUpdateTheme() throws Exception {
     //Tests updating title
     theme1.setTitle("Livet i havet");
-    mockMvc.perform(put("/tegnelabben/{id}", theme1.getId())
+    mockMvc.perform(put("/tema/{id}", theme1.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .header("Authorization", jwt)
         .content(objectMapper.writeValueAsString(theme1)))
@@ -104,14 +105,14 @@ class ThemeControllerTest {
 
     //Negativ test -  updating title
     theme1.setTitle("Hoy hvor det går");
-    mockMvc.perform(put("/tegnelabben/{id}", theme1.getId())
+    mockMvc.perform(put("/tema/{id}", theme1.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(theme1)))
         .andExpect(status().isForbidden());
 
     //Tests updating description
     theme1.setDescription("Test description");
-    mockMvc.perform(put("/tegnelabben/{id}", theme1.getId())
+    mockMvc.perform(put("/tema/{id}", theme1.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .header("Authorization", jwt)
         .content(objectMapper.writeValueAsString(theme1)))
@@ -121,7 +122,7 @@ class ThemeControllerTest {
 
     //Negative test - updating description
     theme1.setDescription("Test description");
-    mockMvc.perform(put("/tegnelabben/{id}", theme1.getId())
+    mockMvc.perform(put("/tema/{id}", theme1.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(theme1)))
         .andExpect(status().isForbidden());
@@ -129,7 +130,7 @@ class ThemeControllerTest {
 
     //Tests updating grade
     theme1.setGrade(4);
-    mockMvc.perform(put("/tegnelabben/{id}", theme1.getId())
+    mockMvc.perform(put("/tema/{id}", theme1.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .header("Authorization", jwt)
         .content(objectMapper.writeValueAsString(theme1)))
@@ -139,18 +140,17 @@ class ThemeControllerTest {
 
     //Negative test - updating grade
     theme1.setGrade(4);
-    mockMvc.perform(put("/tegnelabben/{id}", theme1.getId())
+    mockMvc.perform(put("/tema/{id}", theme1.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(theme1)))
         .andExpect(status().isForbidden());
 
-    //todo: kan legge til for thumbnail og video, men ikke prekert atm
   }
 
   @Test
   void testCreateTheme() throws Exception {
     //test if it is able to create theme
-    mockMvc.perform(post("/tegnelabben").contentType(MediaType.APPLICATION_JSON)
+    mockMvc.perform(post("/tema").contentType(MediaType.APPLICATION_JSON)
         .header("Authorization", jwt)
         .content(objectMapper.writeValueAsString(theme3)))
         .andExpect(status().is2xxSuccessful())
@@ -158,7 +158,7 @@ class ThemeControllerTest {
         .andExpect(jsonPath("$.title", is(theme3.getTitle())));
 
     //Negative test - creating theme
-    mockMvc.perform(post("/tegnelabben").contentType(MediaType.APPLICATION_JSON)
+    mockMvc.perform(post("/tema").contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(theme3)))
         .andExpect(status().isForbidden());
   }
@@ -166,20 +166,20 @@ class ThemeControllerTest {
   @Test
   void testDeleteTheme() throws Exception {
     //Test if able to delete theme
-    mockMvc.perform(delete("/tegnelabben/{id}", theme1.getId())
+    mockMvc.perform(delete("/tema/{id}", theme1.getId())
         .header("Authorization", jwt)
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
 
     //Negative test - delete theme
-    mockMvc.perform(delete("/tegnelabben/{id}", theme1.getId())
+    mockMvc.perform(delete("/tema/{id}", theme1.getId())
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isForbidden());
   }
 
   String getHeader() {
     try {
-      MvcResult mvcResult = mockMvc.perform(post("/tegnelabben/admin/authenticate").contentType(MediaType.APPLICATION_JSON)
+      MvcResult mvcResult = mockMvc.perform(post("/admin/authenticate").contentType(MediaType.APPLICATION_JSON)
           .content(objectMapper.writeValueAsString(authenticationRequest)))
           .andReturn();
       String res = mvcResult.getResponse().getContentAsString();

@@ -3,12 +3,12 @@ package com.example.tegnelabben.model;
 //Importerte artifak:  spring-boot-starter-data-jpa
 import javax.persistence.*;
 
-@Entity
-@Table(name = "Theme")
 /**
  * Class for Theme
  * @version 1.0
  */
+@Entity
+@Table(name = "Theme")
 public class Theme {
 
   @Id
@@ -36,6 +36,14 @@ public class Theme {
   public Theme() {
   }
 
+  /**
+   * Constructor for theme
+   * @param title of theme
+   * @param description of theme
+   * @param grade theme belongs to
+   * @param thumbnail Picture to used before video starts
+   * @param videolink that links to where the video is stored
+   */
   public Theme(String title, String description, int grade, String thumbnail, String videolink) {
     this.title = title;
     this.description = description;
@@ -46,7 +54,6 @@ public class Theme {
 
   /**
    * Getters and setters for all attributes for now.
-   * Todo: make an assessment on which we actually need and not.
    */
   public long getId() {
     return id;

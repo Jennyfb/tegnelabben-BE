@@ -16,7 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 /**
- * class to configure spring security
+ * Class to configure spring security.
  */
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)

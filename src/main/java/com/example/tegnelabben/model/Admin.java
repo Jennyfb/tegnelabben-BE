@@ -10,6 +10,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Model class for Admin
+ * @version 1.0
+ */
 @Entity
 @Table(name = "admin")
 public class Admin {
@@ -25,9 +29,6 @@ public class Admin {
   @Column(name="password")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   private String password;
-
-  //todo: legge inn et forhold mellom admin og tema? foreløpig nei
-
 
   /**
    * Empty class constructor
@@ -82,6 +83,10 @@ public class Admin {
     this.password = password;
   }
 
+  /**
+   * To string method
+   * @return String with admin info
+   */
   @Override
   public String toString() {
     return "Admin{" +
@@ -94,7 +99,6 @@ public class Admin {
 
   /**
    * Generated equals method. This checks if an object o is equal to current admin.
-   * //todo: do we need this if we "only" have one admin.
    * @param o to be compared to
    * @return boolean if equal or not.
    */
@@ -112,7 +116,6 @@ public class Admin {
   }
 
   /**
-   * Todo: Not sure what this does
    * @return int generated based on username?
    */
   @Override
@@ -120,6 +123,10 @@ public class Admin {
     return Objects.hash(username);
   }
 
+  /**
+   * Method for retrieving private admin
+   * @return private admin object
+   */
   @JsonIgnore
   public Object getPrivateAdmin(){
     return new PrivateAdmin(id, username, email, password);

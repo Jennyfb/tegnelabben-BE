@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * class to hash passwords with sha256
+ * Class to hash passwords with sha256
  */
 public class Sha256PasswordEncoder implements PasswordEncoder  {
   private final String salt;
