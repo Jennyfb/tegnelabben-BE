@@ -8,6 +8,9 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Service class for theme
+ */
 @Service
 public class ThemeService {
   @Autowired
@@ -15,12 +18,12 @@ public class ThemeService {
 
   /**
    * Method for finding all themes
-   * @return List of all themes or throw exception if there are no themes.
+   * @return List of all themes
+   * @throws NoSuchElementException if there are no themes created yet
    */
   public List<Theme> findAllThemes() {
     List<Theme> themes = themeRepo.findAll();
-    //todo: trenger vi å returnere bad request? eller kan det bare returneres en tom liste?
-    if(themes.size() == 0) {
+    if(themes.isEmpty()) {
       throw new NoSuchElementException("There are no themes created yet");
     }
     return themes;
@@ -29,7 +32,7 @@ public class ThemeService {
   /**
    * Method for finding all themes that belong to a specific grade
    * @param grade the specific grade
-   * @return List with themes in grade
+   * @return List with themes in grade or empty list if there are none
    */
   public List<Theme> findThemesByGrade(int grade){
     List<Theme> allThemes = themeRepo.findAll();
@@ -46,7 +49,8 @@ public class ThemeService {
   /**
    * Method for finding theme by theme id
    * @param id of the theme to be found
-   * @return theme or throw exception if theme does not exist
+   * @return Theme to be found
+   * @throws NoSuchElementException if the specific theme does not exist
    */
   public Theme findThemeById(long id) {
     if(themeRepo.findById(id) == null) {
@@ -62,7 +66,8 @@ public class ThemeService {
    * @param grade the theme belongs to
    * @param thumbnail link to thumbnail picture
    * @param videoLink link to video of theme
-   * @return the theme or throw exception if any input is wrong
+   * @return The newly created theme
+   * @throws IllegalArgumentException if wrong info was inputted
    */
   public Theme createTheme(String title, String description, int grade, String thumbnail, String videoLink) {
     if(title.equals("")){
@@ -71,7 +76,7 @@ public class ThemeService {
       throw new IllegalArgumentException("Theme must have a description.");
     } else if(grade<0 || grade>20){
       throw new IllegalArgumentException("Grade must be between 1-19.");
-    } else if(thumbnail.equals("")){ //todo: do upload to s3 bucket here?
+    } else if(thumbnail.equals("")){
       throw new IllegalArgumentException("Theme must have thumbnail.");
     } else if(videoLink.equals("")){
       throw new IllegalArgumentException("Theme must have link to video.");
@@ -90,7 +95,9 @@ public class ThemeService {
    * Method for updating existing theme
    * @param updatedTheme with updated info
    * @param id of theme to be updated
-   * @return The updated theme or null if not valid
+   * @return The updated theme
+   * @throws NoSuchElementException if there id does not correspond with any existing themes
+   * @throws IllegalArgumentException if grade is outside correct interval
    */
   public Theme updateTheme(Theme updatedTheme, long id){
     Theme current = themeRepo.findById(id);
@@ -111,14 +118,11 @@ public class ThemeService {
     }
 
     //check if grade is correct format
-    //todo: check if this works
     if(updatedTheme.getGrade()<1 || updatedTheme.getGrade()>20){
       throw new IllegalArgumentException("Grade must be between 1-19.");
     } else {
       current.setGrade(updatedTheme.getGrade());
     }
-
-    //todo: here we could upload video and thumbnail to aws s3 buckets
 
     //checks thumbnail not null
     if(!updatedTheme.getThumbnail().equals("") && updatedTheme.getThumbnail()!=null){
@@ -136,7 +140,7 @@ public class ThemeService {
   /**
    * Method for deleting theme by id
    * @param id of theme to be deleted
-   * throws exception if id does not exist
+   * @throws NoSuchElementException if id does not exist
    */
   public void deleteTheme(long id) {
     Theme theme = themeRepo.findById(id);

@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
@@ -28,7 +29,7 @@ import org.springframework.test.web.servlet.MvcResult;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class AdminControllerTest {
+public class AdminControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -69,11 +70,12 @@ class AdminControllerTest {
     adminRepo.deleteAll();
   }
 
-  //todo:fjerne denne? siden admin ikke skal lages :))
+
   @Test
   void testCreateAdmin() throws Exception {
-    mockMvc.perform(post("/tegnelabben/admin").contentType(MediaType.APPLICATION_JSON)
-        .content(objectMapper.writeValueAsString(admin2.getPrivateAdmin())))
+    mockMvc.perform(post("/admin").contentType(MediaType.APPLICATION_JSON)
+        .content(objectMapper.writeValueAsString(admin2.getPrivateAdmin()))
+        .header("Authorization", jwt))
         .andExpect(status().is(201));
   }
 
@@ -82,7 +84,7 @@ class AdminControllerTest {
   void testUpdateAdmin() throws Exception {
     //Tests updating username
     admin1.setUsername("Janne");
-    mockMvc.perform(put("/tegnelabben/admin/{id}", admin1.getId()).contentType(MediaType.APPLICATION_JSON)
+    mockMvc.perform(put("/admin/{id}", admin1.getId()).contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(admin1))
         .header("Authorization", jwt))
         .andExpect(status().isOk())
@@ -91,18 +93,17 @@ class AdminControllerTest {
 
     //Negative test - updating username
     admin1.setUsername("Henny");
-    mockMvc.perform(put("/tegnelabben/admin/{id}", admin1.getId()).contentType(MediaType.APPLICATION_JSON)
+    mockMvc.perform(put("/admin/{id}", admin1.getId()).contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(admin1)))
         .andExpect(status().isForbidden());
   }
 
 
-  //todo: skal ikke det være id-en til admin3? kanskje like greit å bare fjerne den om du ikke skjønner hva den gjør
   @Test
   void testConfirmPassword() throws Exception {
     Admin admin3 = new Admin("Henny", "henny@gmail.no", "password123");
 
-    mockMvc.perform(post("/tegnelabben/admin/{id}/confirm-password", admin1.getId())
+    mockMvc.perform(post("/admin/{id}/confirm-password", admin1.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(admin3.getPrivateAdmin()))
         .header("Authorization", jwt))
@@ -111,19 +112,19 @@ class AdminControllerTest {
 
   @Test
   void testDeleteAdmin() throws Exception {
-    mockMvc.perform(delete("/tegnelabben/admin/{id}", admin1.getId())
+    mockMvc.perform(delete("/admin/{id}", admin1.getId())
         .contentType(MediaType.APPLICATION_JSON)
         .header("Authorization", jwt))
         .andExpect(status().isOk());
     //Negative test - delete user
-    mockMvc.perform(delete("/tegnelabben/admin/{id}", admin1.getId())
+    mockMvc.perform(delete("/admin/{id}", admin1.getId())
         .contentType(MediaType.APPLICATION_JSON))
         .andExpect(status().isForbidden());
   }
 
   String getHeader() {
     try {
-      MvcResult mvcResult = mockMvc.perform(post("/tegnelabben/admin/authenticate").contentType(MediaType.APPLICATION_JSON)
+      MvcResult mvcResult = mockMvc.perform(post("/admin/authenticate").contentType(MediaType.APPLICATION_JSON)
           .content(objectMapper.writeValueAsString(authenticationRequest)))
           .andReturn();
       String res = mvcResult.getResponse().getContentAsString();

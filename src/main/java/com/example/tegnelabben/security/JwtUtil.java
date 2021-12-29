@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+/**
+ * Class for administrating and validating jwt tokens.
+ */
 @Service
 public class JwtUtil {
   @Value("${api.secret}")

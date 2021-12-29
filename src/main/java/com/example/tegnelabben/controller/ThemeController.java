@@ -14,13 +14,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-/**
- * Controller class for Theme
- */
-//todo: endre til /tegnelabben/tema evt bare /tema
+
 @RestController
 @RequestMapping("/tema")
 @CrossOrigin
+/**
+ * Controller class for Theme
+ */
 public class ThemeController {
 
   @Autowired
@@ -76,7 +76,6 @@ public class ThemeController {
   }
 
   /**
-   * todo: should we do the upload of videos through here?
    * Post mapping for creating a theme
    * @param theme Requesting body, theme to be created
    * @return theme and HttpStatus.CREATED or HttpStatus.BAD_REQUEST and error message

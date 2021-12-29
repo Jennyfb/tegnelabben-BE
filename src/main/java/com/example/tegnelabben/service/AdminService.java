@@ -14,7 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
- * Service class for admin service
+ * Service class for admin
  */
 @Service
 public class AdminService {
@@ -23,11 +23,11 @@ public class AdminService {
   @Value("${security.salt}")
   String salt;
 
-  //todo: remove this so one can not just create a new admin.
   /**
    * Method for creating admin
    * @param admin data received from client to create user
-   * @return user created or throw exception if input is wrong
+   * @return The newly admin-user created
+   * @throws IllegalArgumentException if input is wrong
    */
   public Admin createAdmin(Admin admin) {
     admin.setPassword(hashPassword(admin.getPassword()));
@@ -42,11 +42,13 @@ public class AdminService {
   }
 
   /**
-   * @return list of all themes sorted by grade or throw exception if there are no themes
+   * Method for finding all Admins
+   * @return List of all themes sorted by grade
+   * @throws NoSuchElementException if there are no admins created
    */
   public List<Admin> findAllAdmins() {
     List<Admin> admins = adminRepo.findAll();
-    if(admins.size() == 0) {
+    if(admins.isEmpty()) {
       throw new NoSuchElementException("There are no admins created yet");
     }
 
@@ -91,9 +93,10 @@ public class AdminService {
   }
 
   /**
-   * todo: hva gjør vi om det bare er en admin igjen? skal man kunne slette den siste admin brukeren?
    * Method for deleting a admin
    * @param id, of the user that is to be deleted
+   * @throws AccessException if admin id does not correspond with id of admin to be deleted
+   * @throws NoSuchElementException if no admin with this id exist
    */
   public void deleteAdmin(long id) throws AccessException {
     //admin should only be able to delete their own user
