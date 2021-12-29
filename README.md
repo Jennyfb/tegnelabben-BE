@@ -21,9 +21,10 @@ spring.datasource.username=<username>
 spring.datasource.password=<password>
 ```
 
-Run api.
+Install dependencies and run api:
 ```
-mvn exec:java -Dexec.mainClass="project.name"
+mvn install
+mvn exec:java -Dexec.mainClass="com.example.tegnelabben.TegnelabbenApplication"
 ```
 Or use ide to run api.
 
